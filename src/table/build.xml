@@ -1,0 +1,38 @@
+<project name="table" default="jar" basedir=".">
+    <description>
+        Compile java files in table
+    </description>
+    <property name="build" location="../../build"/>
+    <property name="build.src" location="${build}/src"/>
+    <property name="java.libs" location="${user.home}/Java/libs"/>
+    <property name="jar" location="${build}/table.jar"/>
+
+    <target name="init">
+        <!-- Create the time stamp properties DSTAMP, TSTAMP, and TODAY -->
+        <tstamp/>
+
+        <!-- Create the build directory used by compile -->
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.src}"/>
+    </target>
+
+    <target name="compile" description="compile the source" depends="init">
+        <!-- Compile the java code -->
+        <javac srcdir="." destdir="${build.src}"
+               includeAntRuntime="false"
+               listfiles="true"/>
+    </target>
+
+    <target name="jar" description="build the jar" depends="compile">
+        <jar destfile="${jar}" basedir="${build.src}"/>
+    </target>
+
+    <target name="install" description="install the jar" depends="jar">
+        <copy file="${jar}" todir="${java.libs}" overwrite="true"/>
+    </target>
+
+    <target name="clean" description="clean the target dir">
+        <delete dir="${build.src}"/>
+        <delete file="${jar}"/>
+    </target>
+</project>
